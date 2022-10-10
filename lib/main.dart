@@ -1,4 +1,7 @@
+import 'package:absen_sek/bottomnav.dart';
+import 'package:absen_sek/constant.dart';
 import 'package:absen_sek/home/home_screen.dart';
+import 'package:absen_sek/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,10 +16,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(),
+      debugShowCheckedModeBanner: false,
+      theme:
+          ThemeData(primarySwatch: Constant.yellowPrim, fontFamily: 'Outfit'),
+      home: BottomNav(),
     );
   }
 }
