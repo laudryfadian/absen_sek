@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme:
           ThemeData(primarySwatch: Constant.yellowPrim, fontFamily: 'Outfit'),
-      home: BottomNav(),
+      home: LoginScreen(),
     );
   }
 }

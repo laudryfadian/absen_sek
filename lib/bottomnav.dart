@@ -50,12 +50,11 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: PersistentTabView(
+    return PersistentTabView(
       context,
       screens: screen(),
       items: navBarItems(),
       navBarStyle: NavBarStyle.style10,
-    ));
+    );
   }
 }

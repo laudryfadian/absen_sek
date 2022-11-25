@@ -38,6 +38,15 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^3.0.1
   persistent_bottom_nav_bar: ^5.0.2
+  http: ^0.13.5
+  shared_preferences: ^2.0.15
+  quickalert: ^1.0.0
+  rflutter_alert: ^2.0.4
+  dropdown_button2: ^1.8.5
+  geolocator: ^9.0.2
+  uploadcare_client: ^6.2.0
+  image_picker: ^0.8.6
+  open_street_map_search_and_pick: ^0.0.15
 
 dev_dependencies:
   flutter_test:
