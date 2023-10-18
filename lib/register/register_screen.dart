@@ -30,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sign Up !"),
+        title: Text("Sign Up"),
       ),
       resizeToAvoidBottomInset: false,
       body: SafeArea(

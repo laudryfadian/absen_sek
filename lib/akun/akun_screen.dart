@@ -14,7 +14,7 @@ class AkunScreen extends StatefulWidget {
 }
 
 class _AkunScreenState extends State<AkunScreen> {
-  String? nama, email, nohp, posisi;
+  String? nama, email, nohp, posisi, imageProfil;
   int? gaji;
   bool superUser = false;
 
@@ -34,6 +34,7 @@ class _AkunScreenState extends State<AkunScreen> {
       posisi = prefs.getString('posisi');
       gaji = prefs.getInt('gaji');
       superUser = prefs.getBool('superUser')!;
+      imageProfil = prefs.getString('image');
     });
   }
 
@@ -81,9 +82,13 @@ class _AkunScreenState extends State<AkunScreen> {
                         border:
                             Border.all(color: Constant.yellowPrim, width: 4),
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/images/zoro.jpg")))),
+                        image: imageProfil != null
+                            ? DecorationImage(
+                                fit: BoxFit.fitWidth,
+                                image: NetworkImage(imageProfil!))
+                            : DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage("assets/images/xoro.png")))),
                 SizedBox(height: 20),
                 Row(
                   children: [

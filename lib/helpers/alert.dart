@@ -62,4 +62,28 @@ class ShowAlert {
       ],
     ).show();
   }
+
+  static alertFailedWithNavigatePush(
+      BuildContext context, String title, route) {
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: title,
+      buttons: [
+        DialogButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => route),
+            );
+          },
+          width: 120,
+          child: const Text(
+            "Okey",
+            style: TextStyle(color: Colors.black, fontSize: 20),
+          ),
+        )
+      ],
+    ).show();
+  }
 }

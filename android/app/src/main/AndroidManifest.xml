@@ -4,6 +4,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true"
         android:label="absen_sek"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

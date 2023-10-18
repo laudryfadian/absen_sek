@@ -69,24 +69,24 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               padding: const EdgeInsets.all(10),
                               child: ListTile(
                                 title: Text(
-                                  data.tanggal,
+                                  data.date,
                                   style: TextStyle(fontSize: 17),
                                 ),
                                 subtitle: Text(
-                                  data.ket,
+                                  data.status,
                                   style: TextStyle(
-                                      color: data.ket == "masuk"
-                                          ? Colors.green
-                                          : Colors.red,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 24),
                                 ),
-                                trailing: data.approve == "pending"
-                                    ? Image.asset("assets/images/progress.gif")
-                                    : data.approve == "approve"
-                                        ? Image.asset("assets/images/check.png")
-                                        : Image.asset(
-                                            "assets/images/cancel.png"),
+                                // trailing: data.approve == "pending"
+                                //     ? Image.asset("assets/images/progress.gif")
+                                //     : data.approve == "approve"
+                                //         ? Image.asset("assets/images/check.png")
+                                //         : Image.asset(
+                                //             "assets/images/cancel.png"),
+                                trailing: data.approve
+                                    ? Image.asset("assets/images/check.png")
+                                    : Image.asset("assets/images/cancel.png"),
                               ),
                             ),
                           ),
@@ -94,9 +94,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HistoryDetailScreen(
-                                        data: data,
-                                      )),
+                                builder: (context) => HistoryDetailScreen(
+                                  data: data,
+                                ),
+                              ),
                             );
                           },
                         );

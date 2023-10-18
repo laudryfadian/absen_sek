@@ -27,12 +27,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool loading = false;
-  bool masuk = false;
-  bool pulang = false;
+  String message = "";
+  String route = "";
 
   late Future<Cek> cek;
   late ServiceCek service;
-  String? nama, posisi;
+  String? nama, posisi, category, imageProfil;
   int? gaji;
 
   bool servicestatus = false;
@@ -59,7 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       nama = prefs.getString('nama');
       posisi = prefs.getString('posisi');
+      category = prefs.getString('category');
       gaji = prefs.getInt('gaji');
+      imageProfil = prefs.getString('image');
+      print(imageProfil);
     });
   }
 
@@ -107,10 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           var data = snapshot.data!;
-                          masuk = data.data.masuk;
-                          pulang = data.data.pulang;
+                          message = data.data.message;
+                          route = data.data.route;
 
-                          return Text(data.message);
+                          return Text(data.data.message);
                         } else {
                           return Container();
                         }
@@ -134,13 +137,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 border: Border.all(
                                     color: Constant.yellowPrim, width: 4),
                                 shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image:
-                                        AssetImage("assets/images/zoro.jpg")))),
+                                image: imageProfil != null
+                                    ? DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(imageProfil!))
+                                    : DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(
+                                            "assets/images/xoro.png")))),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            Text(
+                              '$category',
+                              style: TextStyle(
+                                  fontSize: 21, fontWeight: FontWeight.bold),
+                            ),
                             Text(
                               '$posisi',
                               style: TextStyle(
@@ -188,7 +200,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Alert(
                             context: context,
                             type: AlertType.error,
-                            title: "Foto Dulu !",
+                            title: "Foto Dulu",
                             buttons: [
                               DialogButton(
                                 onPressed: () =>
@@ -218,18 +230,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 15),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => IzinScreen()),
-                      );
-                    },
-                    child: Text(
-                      "Izin tidak masuk",
-                      style: TextStyle(color: Colors.red, fontSize: 15),
-                    ),
-                  )
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => IzinScreen()),
+                  //     );
+                  //   },
+                  //   child: Text(
+                  //     "Izin tidak masuk",
+                  //     style: TextStyle(color: Colors.red, fontSize: 15),
+                  //   ),
+                  // )
                 ],
               ),
             ),
@@ -342,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
         imageUrl = "https://ucarecdn.com/" + fileId.toString() + "/";
       });
 
-      absen();
+      await absen();
       setState(() {
         loading = false;
       });
@@ -354,8 +366,9 @@ class _HomeScreenState extends State<HomeScreen> {
   absen() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var idUser = pref.getString("idUser");
+    var idCompany = pref.getString("idCompany");
 
-    if (masuk == false && pulang == false) {
+    if (route == "/") {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -370,26 +383,25 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       var body = jsonEncode({
-        "id": idUser,
-        "ket": masuk ? "masuk" : "pulang",
-        "foto": imageUrl,
+        "idUser": idUser,
+        "idCompany": idCompany,
+        "image": imageUrl,
         "lat": lat,
         "long": long
       });
 
-      var basic = await BasicAuth().getBasic();
-
-      var response = await http.post(Uri.parse(BaseURL.domain + "/absen"),
-          headers: {"Content-Type": "application/json", "authorization": basic},
+      var response = await http.post(
+          Uri.parse(BaseURL.domain + "/absen" + route),
+          headers: {"Content-Type": "application/json"},
           body: body);
 
-      var msg = jsonDecode(response.body)['message'];
+      print(response.body);
 
       if (response.statusCode == 200) {
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text(msg),
+            title: Text("Berhasil Absen"),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -402,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: Text(msg),
+            title: Text("Gagal Absen, coba lagi"),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),

@@ -79,29 +79,29 @@ class _AbsenScreenState extends State<AbsenScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        Container(
-                                            height: 30,
-                                            width: 30,
-                                            child: data.approve == "pending"
-                                                ? Image.asset(
-                                                    "assets/images/progress.gif",
-                                                  )
-                                                : data.approve == "approve"
-                                                    ? Image.asset(
-                                                        "assets/images/check.png",
-                                                      )
-                                                    : Image.asset(
-                                                        "assets/images/cancel.png",
-                                                      )),
                                         Text(
-                                          "  " + data.ket,
+                                          data.time + " ",
                                           style: TextStyle(
-                                              color: data.ket == "masuk"
-                                                  ? Colors.green
-                                                  : Colors.red,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 24),
+                                              fontSize: 21),
                                         ),
+                                        Container(
+                                          height: 30,
+                                          width: 30,
+                                          child: data.approve
+                                              ? Image.asset(
+                                                  "assets/images/check.png",
+                                                )
+                                              : Image.asset(
+                                                  "assets/images/cancel.png",
+                                                ),
+                                        ),
+                                        // Text(
+                                        //   data.status,
+                                        //   style: TextStyle(
+                                        //       fontWeight: FontWeight.bold,
+                                        //       fontSize: 24),
+                                        // ),
                                       ],
                                     )
                                   ],
@@ -111,9 +111,10 @@ class _AbsenScreenState extends State<AbsenScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AbsenDetailScreen(
-                                        data: data,
-                                      )),
+                                builder: (context) => AbsenDetailScreen(
+                                  data: data,
+                                ),
+                              ),
                             );
                           },
                         );

@@ -3,20 +3,17 @@ class Cek {
     required this.status,
     required this.statusCode,
     required this.timestamp,
-    required this.message,
     required this.data,
   });
   late final bool status;
   late final int statusCode;
   late final String timestamp;
-  late final String message;
   late final Data data;
 
   Cek.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     statusCode = json['statusCode'];
     timestamp = json['timestamp'];
-    message = json['message'];
     data = Data.fromJson(json['data']);
   }
 
@@ -25,7 +22,6 @@ class Cek {
     _data['status'] = status;
     _data['statusCode'] = statusCode;
     _data['timestamp'] = timestamp;
-    _data['message'] = message;
     _data['data'] = data.toJson();
     return _data;
   }
@@ -33,21 +29,21 @@ class Cek {
 
 class Data {
   Data({
-    required this.masuk,
-    required this.pulang,
+    required this.message,
+    required this.route,
   });
-  late final bool masuk;
-  late final bool pulang;
+  late final String message;
+  late final String route;
 
   Data.fromJson(Map<String, dynamic> json) {
-    masuk = json['masuk'];
-    pulang = json['pulang'];
+    message = json['message'];
+    route = json['route'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['masuk'] = masuk;
-    _data['pulang'] = pulang;
+    _data['message'] = message;
+    _data['route'] = route;
     return _data;
   }
 }

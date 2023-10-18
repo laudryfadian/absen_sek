@@ -13,13 +13,9 @@ class HistoryService {
     final prefs = await SharedPreferences.getInstance();
     var idUser = prefs.getString('idUser');
 
-    var basic = await BasicAuth().getBasic();
-
     var response = await http.get(
-        Uri.parse(BaseURL.domain + "/absen/" + idUser.toString()),
-        headers: {"authorization": basic});
-
-    print(response.body);
+      Uri.parse(BaseURL.domain + "/absen/history/" + idUser.toString()),
+    );
 
     if (response.statusCode == 200) {
       List result = jsonDecode(response.body)['data'];

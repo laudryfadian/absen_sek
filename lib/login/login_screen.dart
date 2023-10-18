@@ -4,6 +4,7 @@ import 'package:absen_sek/bottomnav.dart';
 import 'package:absen_sek/helpers/alert.dart';
 
 import 'package:absen_sek/network/network.dart';
+import 'package:absen_sek/register/face_registration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -153,43 +154,60 @@ class _LoginScreenState extends State<LoginScreen> {
     var body = jsonEncode(
         {"email": emailController.text, "password": passwordController.text});
 
-    String basicAuth =
-        'Basic ' + base64.encode(utf8.encode('ok33g3nd!:okk3pl0nt!'));
-
     try {
-      var response = await http.post(Uri.parse(BaseURL.domain + "/login"),
-          headers: {
-            "Content-Type": "application/json",
-            "authorization": basicAuth
-          },
-          body: body);
-
-      var message = jsonDecode(response.body)['message'];
-
-      print(response.body);
+      var response = await http.post(Uri.parse(BaseURL.domain + "/auth"),
+          headers: {"Content-Type": "application/json"}, body: body);
 
       if (response.statusCode == 200) {
-        var token = jsonDecode(response.body)['data']['token'];
-        var idUser = jsonDecode(response.body)['data']['user']['_id'];
-        var nama = jsonDecode(response.body)['data']['user']['nama'];
-        var nohp = jsonDecode(response.body)['data']['user']['nohp'];
-        var posisi = jsonDecode(response.body)['data']['user']['posisi'];
-        var superUser = jsonDecode(response.body)['data']['user']['superUser'];
-        var gaji = jsonDecode(response.body)['data']['user']['gaji'];
+        var verify = jsonDecode(response.body)['data']['verify'];
 
-        await prefs.setString('email', emailController.text);
-        await prefs.setString('token', token);
-        await prefs.setString('idUser', idUser);
-        await prefs.setString('nama', nama);
-        await prefs.setString('nohp', nohp);
-        await prefs.setString('posisi', posisi);
-        await prefs.setBool('superUser', superUser);
-        await prefs.setInt('gaji', gaji);
+        if (!verify) {
+          ShowAlert.alertFailedWithNavigatePush(
+              context,
+              "Verifikasi Wajahmu Terlebih Dahulu",
+              FaceRegistrationScreen(
+                email: emailController.text,
+                password: passwordController.text,
+              ));
+        } else {
+          var idUser = jsonDecode(response.body)['data']['id'];
+          var email = jsonDecode(response.body)['data']['email'];
+          var nama = jsonDecode(response.body)['data']['name'];
+          var nohp = jsonDecode(response.body)['data']['phone'];
+          var idCategory = jsonDecode(response.body)['data']['idCategory'];
+          var category = jsonDecode(response.body)['data']['category'];
+          var idCompany = jsonDecode(response.body)['data']['idCompany'];
+          var company = jsonDecode(response.body)['data']['company'];
+          var image = jsonDecode(response.body)['data']['image'];
+          var isAbsen = jsonDecode(response.body)['data']['isAbsen'];
+          var job = jsonDecode(response.body)['data']['job'];
+          var jobType = jsonDecode(response.body)['data']['jobType'];
+          var superUser = jsonDecode(response.body)['data']['superUser'];
+          var gaji = jsonDecode(response.body)['data']['salary'];
+          var verified = jsonDecode(response.body)['data']['verify'];
 
-        ShowAlert.alertSuccessWithRoutePushRemove(
-            context, message, BottomNav());
+          await prefs.setString('email', email);
+          await prefs.setString('idUser', idUser);
+          await prefs.setString('nama', nama);
+          await prefs.setString('nohp', nohp);
+          await prefs.setString('posisi', job);
+          await prefs.setBool('superUser', superUser);
+          await prefs.setInt('gaji', gaji);
+          await prefs.setString('idCategory', idCategory);
+          await prefs.setString('category', category);
+          await prefs.setString('idCompany', idCompany);
+          await prefs.setString('company', company);
+          await prefs.setString('image', image);
+          await prefs.setBool('isAbsen', isAbsen);
+          await prefs.setString('jobType', jobType);
+          await prefs.setBool('verify', verified);
+
+          ShowAlert.alertSuccessWithRoutePushRemove(
+              context, "Berhasil Login", BottomNav());
+        }
       } else {
-        ShowAlert.alertFailedWithNavigatePop(context, message);
+        ShowAlert.alertFailedWithNavigatePop(
+            context, jsonDecode(response.body)['message']);
       }
       setState(() {
         loading = false;

@@ -47,6 +47,7 @@ dependencies:
   uploadcare_client: ^6.2.0
   image_picker: ^0.8.6
   open_street_map_search_and_pick: ^0.0.15
+  maps_launcher: ^2.2.0
 
 dev_dependencies:
   flutter_test:

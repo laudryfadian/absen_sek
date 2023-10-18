@@ -75,10 +75,10 @@ class _IzinScreenState extends State<IzinScreen> {
 
     final body = jsonEncode({"idUser": idUser, "alasan": izinText.text});
 
-    var basic = await BasicAuth().getBasic();
+    // var basic = await BasicAuth().getBasic();
 
     final response = await http.post(Uri.parse(BaseURL.domain + "/absen/izin"),
-        headers: {"Content-Type": "application/json", "authorization": basic},
+        // headers: {"Content-Type": "application/json", "authorization": basic},
         body: body);
 
     var msg = jsonDecode(response.body)['message'];
